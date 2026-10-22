@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Práctica CCSE</title>
+<meta name="description" content="Las 300 preguntas del manual CCSE 2026 del Instituto Cervantes con corrección inmediata, repaso de falladas y simulacro de 25 preguntas.">
+<meta name="color-scheme" content="light dark">
+<style>html{color-scheme:light}body{margin:0}[hidden]{display:none!important}</style>
+</head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f7f3ea;--card:#fffdf8;--fg:#1f1b16;--mut:#6b6359;--line:#e3dccd;--red:#a3262a;--redbg:#f6dcdb;--gold:#d99a1f;--ok:#2e6b3f;--okbg:#dcefdf;--bad:#a3262a;--badbg:#f6dcdb;--btn:#1f1b16;--btnfg:#fffdf8;--hero:#a3262a;--herofg:#fff8ee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17140f;--card:#211d17;--fg:#f1ebdf;--mut:#a39a8c;--line:#383126;--red:#e0686b;--redbg:#3d2121;--gold:#e8b44a;--ok:#7fcb94;--okbg:#1f3526;--bad:#e0686b;--badbg:#3d2121;--btn:#f1ebdf;--btnfg:#17140f;--hero:#4a1a1c;--herofg:#fbf2e4;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17140f;--card:#211d17;--fg:#f1ebdf;--mut:#a39a8c;--line:#383126;--red:#e0686b;--redbg:#3d2121;--gold:#e8b44a;--ok:#7fcb94;--okbg:#1f3526;--bad:#e0686b;--badbg:#3d2121;--btn:#f1ebdf;--btnfg:#17140f;--hero:#4a1a1c;--herofg:#fbf2e4;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 Inter,system-ui,sans-serif;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.hero{background:var(--hero);color:var(--herofg);border-radius:16px;padding:24px 20px;display:flex;flex-direction:column;gap:14px;border-bottom:5px solid var(--gold)}
+.eyebrow{font:600 .72rem/1.3 Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
+.hero h1{font:700 clamp(1.7rem,6.5vw,2.3rem)/1.08 Fraunces,Georgia,serif;margin:0;text-wrap:balance}
+.hero p{margin:0;font-size:1rem;line-height:1.5;color:var(--herofg);opacity:.92;max-width:52ch}
+.hero .btn{background:var(--herofg);color:var(--hero)}
+.hero .btn.ghost{background:none;color:var(--herofg);border:1.5px solid var(--herofg)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;min-width:0}
+.st b{display:block;font:700 1.35rem Fraunces,serif;font-variant-numeric:tabular-nums}
+.st span{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.st.bad b{color:var(--bad)}.st.ok b{color:var(--ok)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{background:none;border:0;border-bottom:3px solid transparent;color:var(--mut);font:500 .95rem Inter;padding:10px 12px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected=true]{color:var(--fg);border-color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:5px 12px;font:500 .85rem Inter;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--btn);color:var(--btnfg);border-color:var(--btn)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.meta{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--mut);letter-spacing:.04em;text-transform:uppercase}
+.q{font:600 1.2rem/1.35 Fraunces,Georgia,serif;margin:0;text-wrap:pretty}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;text-align:left;width:100%;background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:12px;color:var(--fg);font:inherit;cursor:pointer;min-width:0}
+.opt:hover:not(:disabled){border-color:var(--fg)}
+.opt .l{font-weight:600;color:var(--mut);flex:none}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.opt.sel{border-color:var(--fg);background:var(--card)}
+.opt:disabled{cursor:default}
+.exp{border-left:4px solid var(--gold);padding:8px 12px;background:var(--bg);border-radius:0 8px 8px 0}
+.exp.ok{border-color:var(--ok)}.exp.bad{border-color:var(--bad)}
+.exp strong{display:block;margin-bottom:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--btn);color:var(--btnfg);border:0;border-radius:10px;padding:10px 16px;font:600 .95rem Inter;cursor:pointer}
+.btn.ghost{background:none;color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:default}
+.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .g{background:var(--ok)}.bar .r{background:var(--bad)}
+.tl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:.9rem}
+.tl .n{font-variant-numeric:tabular-nums;color:var(--mut)}
+.ids{display:flex;flex-wrap:wrap;gap:6px}
+.id{border:1px solid var(--bad);background:var(--badbg);color:var(--fg);border-radius:6px;padding:3px 8px;font:500 .8rem Inter;font-variant-numeric:tabular-nums;cursor:pointer}
+.note{font-size:.8rem;color:var(--mut)}
+.big{font:700 2.6rem Fraunces,serif;font-variant-numeric:tabular-nums}
+.timer{font:700 1.1rem Fraunces,serif;font-variant-numeric:tabular-nums}
+.timer.low{color:var(--bad)}
+.empty{color:var(--mut);text-align:center;padding:24px 8px}
+@media(max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Práctica CCSE · Conocimientos Constitucionales y Socioculturales de España</div>
+    <h1>Tu nacionalidad española se aprueba practicando</h1>
+    <p>Entrena con las 300 preguntas del manual oficial, entiende por qué cada respuesta es la correcta y repasa solo lo que fallas. Con 15 aciertos de 25, el examen es tuyo.</p>
+    <div class="row"><button class="btn" id="heroGo">Empezar a practicar</button><button class="btn ghost" id="heroSim">Simulacro de examen</button></div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <main id="main"></main>
+  <p class="note" id="sync"></p>
+  <footer class="note" style="border-top:1px solid var(--line);padding-top:12px">Página creada por <a href="https://www.linkedin.com/in/sandraalfarovargas/" target="_blank" rel="noopener" style="color:inherit;font-weight:600">Sandra Alfaro Vargas</a>.<br><br>Las preguntas y las respuestas correctas son del <em>Manual de preparación de la prueba CCSE 2026</em>, © Instituto Cervantes 2025, y se reproducen con fines de estudio. Las explicaciones son material de apoyo, no oficial. Manual y examen oficiales: <a href="https://examenes.cervantes.es/" target="_blank" rel="noopener" style="color:inherit">examenes.cervantes.es</a>. Tu progreso es privado y solo lo ves tú.</footer>
+</div>
+<script src="q.js"></script>
+<script>
+const Q=RAW.trim().split('\n').map(l=>{const f=l.split('|');const o=[f[2],f[3],f[4]].filter(Boolean);return {id:+f[0],t:+f[0].charAt(0),q:f[1],o,a:'abc'.indexOf(f[5]),e:f[6]}});
+const TN={1:'Tarea 1 · Gobierno y ciudadanía',2:'Tarea 2 · Derechos y deberes',3:'Tarea 3 · Geografía',4:'Tarea 4 · Cultura e historia',5:'Tarea 5 · Sociedad'};
+const TS={1:'T1 Gobierno',2:'T2 Derechos',3:'T3 Geografía',4:'T4 Cultura',5:'T5 Sociedad'};
+const L='abc';
+const byId={};Q.forEach(q=>byId[q.id]=q);
+let S={a:{},r:{},sims:[],seen:[],fx:[]};
+let tab='practicar',filt=0,onlyPending=true,cur=null,shown=false,failedIdx=null;
+let sim=null,timerH=null,ref=null,saveT=null;
+const $=s=>document.querySelector(s);
+const el=(h)=>{const d=document.createElement('div');d.innerHTML=h;return d.firstElementChild};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// ---------- persistence ----------
+function lsGet(){try{return JSON.parse(localStorage.getItem('ccse300')||'null')}catch(e){return null}}
+function lsSet(){try{localStorage.setItem('ccse300',JSON.stringify(S))}catch(e){}}
+function norm(d){return {a:d&&d.a||{},r:d&&d.r||{},sims:d&&d.sims||[],seen:d&&d.seen||[],fx:d&&d.fx||[]}}
+function save(){
+  lsSet();
+  if(!ref)return;
+  clearTimeout(saveT);
+  saveT=setTimeout(()=>{ref.set({a:S.a,r:S.r,sims:S.sims,seen:S.seen,fx:S.fx,ts:Date.now()}).then(()=>setSync('Progreso guardado en tu navegador.')).catch(()=>setSync('Progreso guardado en tu navegador.'))},400);
+}
+function setSync(t){$('#sync').textContent=t}
+async function init(){
+  S=norm(lsGet());
+  const goTo=t=>{tab=t;cur=null;shown=false;render();$('#tabs').scrollIntoView({behavior:'smooth',block:'start'})};
+  $('#heroGo').onclick=()=>goTo('practicar');
+  $('#heroSim').onclick=()=>{if(sim&&sim.done)sim=null;goTo('simulacro')};
+  setSync('Progreso guardado en tu navegador.');
+  render();
+  try{
+    const db=await claude.use('db'),user=await claude.use('user');
+    if(db&&user){
+      const uid=await user.id();
+      if(uid){
+        ref=db.doc('data/users/'+uid+'/progress');
+        const snap=await ref.get();
+        if(snap.exists){
+          const d=norm(snap.data());
+          // fusiona: lo guardado en la cuenta manda, suma lo local que falte
+          const loc=S;S={a:{...loc.a,...d.a},r:{...loc.r,...d.r},sims:d.sims.length>=loc.sims.length?d.sims:loc.sims,seen:[...new Set([...loc.seen,...d.seen])],fx:[...new Set([...loc.fx,...d.fx])]};
+        }
+        setSync('Progreso guardado en tu navegador.');
+        save();render();
+      }
+    }
+  }catch(e){}
+}
+
+// ---------- stats ----------
+function stats(){
+  let n=0,ok=0;
+  for(const id in S.a){n++;if(S.a[id]===byId[id].a)ok++}
+  return {n,ok,bad:n-ok};
+}
+function failed(){return Q.filter(q=>(S.a[q.id]!==undefined&&S.a[q.id]!==q.a)||S.fx.includes(q.id))}
+function pendingFailed(){return failed().filter(q=>S.r[q.id]!==q.a)}
+function pct(a,b){return b?Math.round(a*1000/b)/10:0}
+function renderStats(){
+  const s=stats();
+  $('#stats').innerHTML=
+   `<div class="st"><b>${s.n}/300</b><span>Contestadas</span></div>
+    <div class="st ok"><b>${s.ok}</b><span>Aciertos</span></div>
+    <div class="st bad"><b>${s.bad}</b><span>Errores</span></div>
+    <div class="st"><b>${pct(s.bad,s.n)}%</b><span>de error</span></div>`;
+}
+function renderTabs(){
+  const T=[['practicar','Practicar'],['falladas','Falladas ('+pendingFailed().length+')'],['simulacro','Simulacro'],['progreso','Progreso']];
+  $('#tabs').innerHTML=T.map(t=>`<button class="tab" role="tab" aria-selected="${tab===t[0]}" data-t="${t[0]}">${t[1]}</button>`).join('');
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(sim&&tab==='simulacro'&&!sim.done&&!confirmLeave())return;tab=b.dataset.t;cur=null;shown=false;render()});
+}
+function confirmLeave(){return true}
+
+// ---------- question card ----------
+function qCard(q,opt){
+  // opt: {chosen, reveal, onPick, mode}
+  const {chosen,reveal}=opt;
+  const opts=q.o.map((t,i)=>{
+    let c='opt';
+    if(reveal){if(i===q.a)c+=' ok';else if(i===chosen)c+=' bad'}
+    else if(i===chosen)c+=' sel';
+    return `<button class="${c}" data-i="${i}" ${reveal?'disabled':''}><span class="l">${L[i]}.</span><span>${esc(t)}</span></button>`;
+  }).join('');
+  let exp='';
+  if(reveal){
+    const good=chosen===q.a;
+    exp=`<div class="exp ${good?'ok':'bad'}"><strong>${good?'Correcto.':'Incorrecto. La respuesta es la '+L[q.a]+'.'}</strong>${esc(q.e)}</div>`;
+  }
+  return `<div class="meta"><span>Pregunta ${q.id}</span><span>${TS[q.t]}</span></div><p class="q">${esc(q.q)}</p><div class="opts">${opts}</div>${exp}`;
+}
+
+// ---------- practicar ----------
+function pool(){
+  return Q.filter(q=>(!filt||q.t===filt)&&(!onlyPending||S.a[q.id]===undefined));
+}
+function viewPracticar(){
+  const m=$('#main');
+  const chips=[[0,'Todas']].concat([1,2,3,4,5].map(t=>[t,'T'+t])).map(c=>`<button class="chip" aria-pressed="${filt===c[0]}" data-f="${c[0]}">${c[1]}</button>`).join('')+
+    `<button class="chip" aria-pressed="${onlyPending}" id="pend">Solo sin contestar</button>`;
+  const p=pool();
+  if(cur===null||!byId[cur]||(!shown&&!p.find(q=>q.id===cur))){cur=p.length?p[0].id:null;shown=false}
+  let body;
+  if(cur===null){
+    body=`<div class="card empty">No quedan preguntas en este filtro. ${onlyPending?'Quita «Solo sin contestar» para repasar de nuevo.':''}</div>`;
+  }else{
+    const q=byId[cur];
+    const done=S.a[q.id]!==undefined;
+    const reveal=shown||done&&!onlyPending;
+    const chosen=S.a[q.id];
+    body=`<div class="card" id="qc">${qCard(q,{chosen,reveal:reveal&&done})}
+      <div class="row"><button class="btn ghost" id="prev">Anterior</button><button class="btn" id="next">${reveal&&done?'Siguiente':'Saltar'}</button><span class="note">${p.length} en este filtro</span></div></div>`;
+  }
+  m.innerHTML=`<div class="chips" style="margin-bottom:12px">${chips}</div>${body}`;
+  m.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{filt=+b.dataset.f;cur=null;shown=false;render()});
+  const pe=$('#pend');if(pe)pe.onclick=()=>{onlyPending=!onlyPending;cur=null;shown=false;render()};
+  if(cur!==null){
+    const q=byId[cur];
+    m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      if(S.a[q.id]===undefined){S.a[q.id]=+b.dataset.i;save()}
+      shown=true;renderStats();renderTabs();viewPracticar();
+    });
+    $('#next').onclick=()=>step(1);
+    $('#prev').onclick=()=>step(-1);
+  }
+}
+function step(d){
+  const list=Q.filter(q=>(!filt||q.t===filt));
+  let i=list.findIndex(q=>q.id===cur);
+  let tries=0;
+  do{i=(i+d+list.length)%list.length;tries++}while(onlyPending&&S.a[list[i].id]!==undefined&&tries<=list.length);
+  cur=list[i].id;shown=false;
+  viewPracticar();
+}
+
+// ---------- falladas ----------
+function redoFailed(){
+  failed().forEach(q=>{delete S.r[q.id]});
+  save();cur=null;shown=false;renderTabs();viewFalladas();
+}
+function viewFalladas(){
+  const m=$('#main');
+  const f=pendingFailed();
+  if(!f.length&&!shown){
+    const tot=failed().length;
+    m.innerHTML=`<div class="card empty">${tot?'Ya acertaste todas las que habías fallado. Buen trabajo.':'Aún no has fallado ninguna.'}${tot?'<div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="redo">Repasar nuevamente las falladas ('+tot+')</button></div><p class="note" style="margin:8px 0 0">Siguen guardadas aquí para que las repitas cuando quieras.</p>':''}</div>`;
+    const rd=$('#redo');if(rd)rd.onclick=redoFailed;return;
+  }
+  if(cur===null||(!shown&&!f.find(q=>q.id===cur))){cur=f[0].id;shown=false}
+  const q=byId[cur];
+  const chosen=shown?S.r[q.id]:undefined;
+  m.innerHTML=`<p class="note" style="margin:0 0 8px">Responde de nuevo las que fallaste. Quedan ${f.length}. Tu primer intento sigue contando en el porcentaje de error. <button class="chip" id="redoAll">Repasar todas de nuevo</button></p>
+   <div class="card">${qCard(q,{chosen,reveal:shown})}<div class="row"><button class="btn" id="nx" ${shown?'':'disabled'}>Siguiente</button></div></div>`;
+  const ra=$('#redoAll');if(ra)ra.onclick=redoFailed;
+  m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{S.r[q.id]=+b.dataset.i;save();shown=true;renderTabs();viewFalladas()});
+  $('#nx').onclick=()=>{
+    const rest=pendingFailed();
+    if(!rest.length)cur=null;
+    else if(S.r[q.id]===q.a)cur=rest[0].id;
+    else{const i=rest.findIndex(x=>x.id===q.id);cur=rest[(i+1)%rest.length].id}
+    shown=false;renderTabs();viewFalladas();
+  };
+}
+
+// ---------- simulacro ----------
+function pick(arr,n){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
+function startSim(){
+  let qs=[],repeated=0;
+  for(let t=1;t<=5;t++){
+    const all=Q.filter(q=>q.t===t);
+    const fresh=all.filter(q=>!S.seen.includes(q.id));
+    let ch=pick(fresh,5);
+    if(ch.length<5){repeated+=5-ch.length;ch=ch.concat(pick(all.filter(q=>S.seen.includes(q.id)),5-ch.length))}
+    qs=qs.concat(ch);
+  }
+  qs.forEach(q=>{if(!S.seen.includes(q.id))S.seen.push(q.id)});
+  save();
+  sim={qs,ans:{},i:0,end:Date.now()+30*60*1000,done:false,repeated};
+  clearInterval(timerH);timerH=setInterval(tick,1000);
+  viewSim();
+}
+function tick(){
+  if(!sim||sim.done){clearInterval(timerH);return}
+  const left=sim.end-Date.now();
+  if(left<=0){finishSim();return}
+  const t=$('#tm');if(t){const s=Math.floor(left/1000);t.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');t.classList.toggle('low',s<300)}
+}
+function finishSim(){
+  if(!sim||sim.done)return;
+  sim.done=true;clearInterval(timerH);
+  const ok=sim.qs.filter(q=>sim.ans[q.id]===q.a).length;
+  const had=new Set(failed().map(q=>q.id));
+  let added=0;
+  sim.qs.forEach(q=>{if(sim.ans[q.id]!==q.a){delete S.r[q.id];if(!had.has(q.id)){S.fx.push(q.id);added++}}});
+  sim.added=added;
+  S.sims.push({ts:Date.now(),ok,n:25,ids:sim.qs.map(q=>q.id),wrong:sim.qs.filter(q=>sim.ans[q.id]!==q.a).map(q=>q.id)});
+  save();viewSim();
+}
+function viewSim(){
+  const m=$('#main');
+  if(!sim){
+    const h=S.sims.slice(-5).reverse().map(s=>`<div class="tl"><span>${new Date(s.ts).toLocaleDateString('es-ES')}</span><span class="n">${s.ok}/25 ${s.ok>=15?'Aprobado':'No aprobado'}</span></div>`).join('');
+    m.innerHTML=`<div class="card"><p class="q">Simulacro de examen</p><p style="margin:0">25 preguntas al azar, 5 de cada tarea, 30 minutos. Siempre te salen preguntas que aún no han aparecido en un simulacro anterior (te quedan ${300-S.seen.length} sin ver). Se necesitan 15 aciertos para aprobar (60 %). No verás las respuestas hasta el final.</p><div class="row"><button class="btn" id="go">Empezar simulacro</button></div>${h?'<div><div class="note" style="margin-bottom:6px">Últimos intentos</div>'+h+'</div>':''}</div>`;
+    $('#go').onclick=startSim;return;
+  }
+  if(sim.done){
+    const ok=sim.qs.filter(q=>sim.ans[q.id]===q.a).length;
+    const wr=sim.qs.filter(q=>sim.ans[q.id]!==q.a);
+    m.innerHTML=`<div class="card"><div class="meta"><span>Resultado</span></div><div class="big" style="color:var(--${ok>=15?'ok':'bad'})">${ok}/25</div><p style="margin:0"><strong>${ok>=15?'Aprobado.':'No aprobado.'}</strong> Necesitas 15. ${wr.length?'Estas son las '+wr.length+' que fallaste:':''}</p>
+      ${wr.length?'<p class="note" style="margin:0">'+(sim.added?sim.added+' se añadieron a Falladas para que las repases. ':'')+(wr.length-sim.added>0?(wr.length-sim.added)+' ya estaban en Falladas y no se duplican.':'')+'</p>':''}
+      ${wr.map(q=>`<div class="card" style="background:var(--bg)">${qCard(q,{chosen:sim.ans[q.id],reveal:true})}</div>`).join('')}
+      <div class="row"><button class="btn" id="again">Otro simulacro</button>${wr.length?'<button class="btn ghost" id="gofail">Repasar falladas</button>':''}</div></div>`;
+    $('#again').onclick=()=>{sim=null;viewSim()};
+    const gf=$('#gofail');if(gf)gf.onclick=()=>{tab='falladas';cur=null;shown=false;sim=null;render()};
+    renderStats();renderTabs();return;
+  }
+  const q=sim.qs[sim.i];
+  const answered=Object.keys(sim.ans).length;
+  m.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><span class="note">Pregunta ${sim.i+1} de 25 · ${answered} contestadas</span><span class="timer" id="tm">30:00</span></div>
+    ${qCard(q,{chosen:sim.ans[q.id],reveal:false})}
+    <div class="row"><button class="btn ghost" id="sp" ${sim.i?'':'disabled'}>Anterior</button>${sim.i<24?'<button class="btn" id="sn">Siguiente</button>':'<button class="btn" id="fin">Terminar</button>'}</div></div>`;
+  m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{sim.ans[q.id]=+b.dataset.i;viewSim()});
+  $('#sp').onclick=()=>{sim.i--;viewSim()};
+  const sn=$('#sn');if(sn)sn.onclick=()=>{sim.i++;viewSim()};
+  const fn=$('#fin');if(fn)fn.onclick=finishSim;
+  tick();
+}
+
+// ---------- progreso ----------
+function viewProgreso(){
+  const m=$('#main');
+  const rows=[1,2,3,4,5].map(t=>{
+    const qs=Q.filter(q=>q.t===t);
+    const n=qs.filter(q=>S.a[q.id]!==undefined).length;
+    const ok=qs.filter(q=>S.a[q.id]===q.a).length;
+    const bad=n-ok;
+    return `<div><div class="tl"><span>${TN[t]}</span><span class="n">${n}/${qs.length} · ${bad} errores</span></div>
+      <div class="bar" title=""><i class="g" style="width:${ok*100/qs.length}%"></i><i class="r" style="width:${bad*100/qs.length}%"></i></div></div>`;
+  }).join('');
+  const s=stats(),f=failed();
+  m.innerHTML=`<div class="card"><p class="q">Tu resumen</p>
+    <p style="margin:0">Contestadas ${s.n} de 300. Errores: <strong>${s.bad}</strong>, que son el <strong>${pct(s.bad,s.n)} %</strong> de las que has contestado y el ${pct(s.bad,300)} % del total de 300.</p>
+    ${rows}
+    <div><div class="note" style="margin-bottom:6px">Preguntas falladas (toca una para repasarla)</div>
+    <div class="ids">${f.length?f.map(q=>`<button class="id" data-id="${q.id}">${q.id}</button>`).join(''):'<span class="note">Ninguna todavía.</span>'}</div></div>
+    <div class="row"><button class="btn ghost" id="rst">Borrar todo mi progreso</button></div><p class="note" id="rn"></p></div>`;
+  m.querySelectorAll('.id').forEach(b=>b.onclick=()=>{tab='falladas';cur=+b.dataset.id;shown=false;render()});
+  let armed=false;
+  $('#rst').onclick=()=>{
+    if(!armed){armed=true;$('#rst').textContent='Toca otra vez para confirmar';return}
+    S={a:{},r:{},sims:[]};save();render();
+  };
+}
+
+function render(){
+  renderStats();renderTabs();
+  if(tab==='practicar')viewPracticar();
+  else if(tab==='falladas')viewFalladas();
+  else if(tab==='simulacro')viewSim();
+  else viewProgreso();
+}
+init();
+</script>
+
+</body></html>
