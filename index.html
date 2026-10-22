@@ -3,14 +3,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
 <style>
-:root{--bg:#f7f3ea;--card:#fffdf8;--fg:#1f1b16;--mut:#6b6359;--line:#e3dccd;--red:#a3262a;--redbg:#f6dcdb;--gold:#d99a1f;--ok:#2e6b3f;--okbg:#dcefdf;--bad:#a3262a;--badbg:#f6dcdb;--btn:#1f1b16;--btnfg:#fffdf8}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17140f;--card:#211d17;--fg:#f1ebdf;--mut:#a39a8c;--line:#383126;--red:#e0686b;--redbg:#3d2121;--gold:#e8b44a;--ok:#7fcb94;--okbg:#1f3526;--bad:#e0686b;--badbg:#3d2121;--btn:#f1ebdf;--btnfg:#17140f;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#17140f;--card:#211d17;--fg:#f1ebdf;--mut:#a39a8c;--line:#383126;--red:#e0686b;--redbg:#3d2121;--gold:#e8b44a;--ok:#7fcb94;--okbg:#1f3526;--bad:#e0686b;--badbg:#3d2121;--btn:#f1ebdf;--btnfg:#17140f;color-scheme:dark}
+:root{--bg:#f7f3ea;--card:#fffdf8;--fg:#1f1b16;--mut:#6b6359;--line:#e3dccd;--red:#a3262a;--redbg:#f6dcdb;--gold:#d99a1f;--ok:#2e6b3f;--okbg:#dcefdf;--bad:#a3262a;--badbg:#f6dcdb;--btn:#1f1b16;--btnfg:#fffdf8;--hero:#a3262a;--herofg:#fff8ee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17140f;--card:#211d17;--fg:#f1ebdf;--mut:#a39a8c;--line:#383126;--red:#e0686b;--redbg:#3d2121;--gold:#e8b44a;--ok:#7fcb94;--okbg:#1f3526;--bad:#e0686b;--badbg:#3d2121;--btn:#f1ebdf;--btnfg:#17140f;--hero:#4a1a1c;--herofg:#fbf2e4;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17140f;--card:#211d17;--fg:#f1ebdf;--mut:#a39a8c;--line:#383126;--red:#e0686b;--redbg:#3d2121;--gold:#e8b44a;--ok:#7fcb94;--okbg:#1f3526;--bad:#e0686b;--badbg:#3d2121;--btn:#f1ebdf;--btnfg:#17140f;--hero:#4a1a1c;--herofg:#fbf2e4;color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font:16px/1.5 Inter,system-ui,sans-serif;padding-inline:16px;padding-block:20px 48px}
 .wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-h1{font:700 1.7rem/1.1 Fraunces,Georgia,serif;margin:0;text-wrap:balance}
-.sub{color:var(--mut);font-size:.9rem;margin:4px 0 0}
+.hero{background:var(--hero);color:var(--herofg);border-radius:16px;padding:24px 20px;display:flex;flex-direction:column;gap:14px;border-bottom:5px solid var(--gold)}
+.eyebrow{font:600 .72rem/1.3 Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
+.hero h1{font:700 clamp(1.7rem,6.5vw,2.3rem)/1.08 Fraunces,Georgia,serif;margin:0;text-wrap:balance}
+.hero p{margin:0;font-size:1rem;line-height:1.5;color:var(--herofg);opacity:.92;max-width:52ch}
+.hero .btn{background:var(--herofg);color:var(--hero)}
+.hero .btn.ghost{background:none;color:var(--herofg);border:1.5px solid var(--herofg)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .st{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;min-width:0}
 .st b{display:block;font:700 1.35rem Fraunces,serif;font-variant-numeric:tabular-nums}
@@ -55,9 +59,11 @@ h1{font:700 1.7rem/1.1 Fraunces,Georgia,serif;margin:0;text-wrap:balance}
 @media(max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 <div class="wrap">
-  <header>
-    <h1>Práctica CCSE<span style="display:block;font:600 1rem/1.3 Inter,system-ui,sans-serif;color:var(--red);margin-top:6px;letter-spacing:.01em">Conocimientos Constitucionales y Socioculturales de España</span></h1>
-    <p class="sub">Las 300 preguntas del manual 2026 del Instituto Cervantes, con el texto literal y la corrección al instante.</p>
+  <header class="hero">
+    <div class="eyebrow">Práctica CCSE · Conocimientos Constitucionales y Socioculturales de España</div>
+    <h1>Tu nacionalidad española se aprueba practicando</h1>
+    <p>Entrena con las 300 preguntas del manual oficial, entiende por qué cada respuesta es la correcta y repasa solo lo que fallas. Con 15 aciertos de 25, el examen es tuyo.</p>
+    <div class="row"><button class="btn" id="heroGo">Empezar a practicar</button><button class="btn ghost" id="heroSim">Simulacro de examen a 30 minutos</button></div>
   </header>
   <div class="stats" id="stats"></div>
   <div class="tabs" role="tablist" id="tabs"></div>
@@ -71,7 +77,7 @@ const TN={1:'Tarea 1 · Gobierno y ciudadanía',2:'Tarea 2 · Derechos y deberes
 const TS={1:'T1 Gobierno',2:'T2 Derechos',3:'T3 Geografía',4:'T4 Cultura',5:'T5 Sociedad'};
 const L='abc';
 const byId={};Q.forEach(q=>byId[q.id]=q);
-let S={a:{},r:{},sims:[]};
+let S={a:{},r:{},sims:[],seen:[],fx:[]};
 let tab='practicar',filt=0,onlyPending=true,cur=null,shown=false,failedIdx=null;
 let sim=null,timerH=null,ref=null,saveT=null;
 const $=s=>document.querySelector(s);
@@ -81,16 +87,19 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 // ---------- persistence ----------
 function lsGet(){try{return JSON.parse(localStorage.getItem('ccse300')||'null')}catch(e){return null}}
 function lsSet(){try{localStorage.setItem('ccse300',JSON.stringify(S))}catch(e){}}
-function norm(d){return {a:d&&d.a||{},r:d&&d.r||{},sims:d&&d.sims||[]}}
+function norm(d){return {a:d&&d.a||{},r:d&&d.r||{},sims:d&&d.sims||[],seen:d&&d.seen||[],fx:d&&d.fx||[]}}
 function save(){
   lsSet();
   if(!ref)return;
   clearTimeout(saveT);
-  saveT=setTimeout(()=>{ref.set({a:S.a,r:S.r,sims:S.sims,ts:Date.now()}).then(()=>setSync('Progreso guardado en tu navegador.')).catch(()=>setSync('Progreso guardado en tu navegador.'))},400);
+  saveT=setTimeout(()=>{ref.set({a:S.a,r:S.r,sims:S.sims,seen:S.seen,fx:S.fx,ts:Date.now()}).then(()=>setSync('Progreso guardado en tu navegador.')).catch(()=>setSync('Progreso guardado en tu navegador.'))},400);
 }
 function setSync(t){$('#sync').textContent=t}
 async function init(){
   S=norm(lsGet());
+  const goTo=t=>{tab=t;cur=null;shown=false;render();$('#tabs').scrollIntoView({behavior:'smooth',block:'start'})};
+  $('#heroGo').onclick=()=>goTo('practicar');
+  $('#heroSim').onclick=()=>{if(sim&&sim.done)sim=null;goTo('simulacro')};
   setSync('Progreso guardado en tu navegador.');
   render();
   try{
@@ -103,7 +112,7 @@ async function init(){
         if(snap.exists){
           const d=norm(snap.data());
           // fusiona: lo guardado en la cuenta manda, suma lo local que falte
-          const loc=S;S={a:{...loc.a,...d.a},r:{...loc.r,...d.r},sims:d.sims.length>=loc.sims.length?d.sims:loc.sims};
+          const loc=S;S={a:{...loc.a,...d.a},r:{...loc.r,...d.r},sims:d.sims.length>=loc.sims.length?d.sims:loc.sims,seen:[...new Set([...loc.seen,...d.seen])],fx:[...new Set([...loc.fx,...d.fx])]};
         }
         setSync('Progreso guardado en tu navegador.');
         save();render();
@@ -118,7 +127,7 @@ function stats(){
   for(const id in S.a){n++;if(S.a[id]===byId[id].a)ok++}
   return {n,ok,bad:n-ok};
 }
-function failed(){return Q.filter(q=>S.a[q.id]!==undefined&&S.a[q.id]!==q.a)}
+function failed(){return Q.filter(q=>(S.a[q.id]!==undefined&&S.a[q.id]!==q.a)||S.fx.includes(q.id))}
 function pendingFailed(){return failed().filter(q=>S.r[q.id]!==q.a)}
 function pct(a,b){return b?Math.round(a*1000/b)/10:0}
 function renderStats(){
@@ -198,18 +207,24 @@ function step(d){
 }
 
 // ---------- falladas ----------
+function redoFailed(){
+  failed().forEach(q=>{delete S.r[q.id]});
+  save();cur=null;shown=false;renderTabs();viewFalladas();
+}
 function viewFalladas(){
   const m=$('#main');
   const f=pendingFailed();
   if(!f.length&&!shown){
     const tot=failed().length;
-    m.innerHTML=`<div class="card empty">${tot?'Ya acertaste todas las que habías fallado. Buen trabajo.':'Aún no has fallado ninguna.'}</div>`;return;
+    m.innerHTML=`<div class="card empty">${tot?'Ya acertaste todas las que habías fallado. Buen trabajo.':'Aún no has fallado ninguna.'}${tot?'<div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="redo">Repasar nuevamente las falladas ('+tot+')</button></div><p class="note" style="margin:8px 0 0">Siguen guardadas aquí para que las repitas cuando quieras.</p>':''}</div>`;
+    const rd=$('#redo');if(rd)rd.onclick=redoFailed;return;
   }
   if(cur===null||(!shown&&!f.find(q=>q.id===cur))){cur=f[0].id;shown=false}
   const q=byId[cur];
   const chosen=shown?S.r[q.id]:undefined;
-  m.innerHTML=`<p class="note" style="margin:0 0 8px">Responde de nuevo las que fallaste. Quedan ${f.length}. Tu primer intento sigue contando en el porcentaje de error.</p>
+  m.innerHTML=`<p class="note" style="margin:0 0 8px">Responde de nuevo las que fallaste. Quedan ${f.length}. Tu primer intento sigue contando en el porcentaje de error. <button class="chip" id="redoAll">Repasar todas de nuevo</button></p>
    <div class="card">${qCard(q,{chosen,reveal:shown})}<div class="row"><button class="btn" id="nx" ${shown?'':'disabled'}>Siguiente</button></div></div>`;
+  const ra=$('#redoAll');if(ra)ra.onclick=redoFailed;
   m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{S.r[q.id]=+b.dataset.i;save();shown=true;renderTabs();viewFalladas()});
   $('#nx').onclick=()=>{
     const rest=pendingFailed();
@@ -223,8 +238,17 @@ function viewFalladas(){
 // ---------- simulacro ----------
 function pick(arr,n){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
 function startSim(){
-  let qs=[];for(let t=1;t<=5;t++)qs=qs.concat(pick(Q.filter(q=>q.t===t),5));
-  sim={qs,ans:{},i:0,end:Date.now()+45*60*1000,done:false};
+  let qs=[],repeated=0;
+  for(let t=1;t<=5;t++){
+    const all=Q.filter(q=>q.t===t);
+    const fresh=all.filter(q=>!S.seen.includes(q.id));
+    let ch=pick(fresh,5);
+    if(ch.length<5){repeated+=5-ch.length;ch=ch.concat(pick(all.filter(q=>S.seen.includes(q.id)),5-ch.length))}
+    qs=qs.concat(ch);
+  }
+  qs.forEach(q=>{if(!S.seen.includes(q.id))S.seen.push(q.id)});
+  save();
+  sim={qs,ans:{},i:0,end:Date.now()+30*60*1000,done:false,repeated};
   clearInterval(timerH);timerH=setInterval(tick,1000);
   viewSim();
 }
@@ -238,6 +262,10 @@ function finishSim(){
   if(!sim||sim.done)return;
   sim.done=true;clearInterval(timerH);
   const ok=sim.qs.filter(q=>sim.ans[q.id]===q.a).length;
+  const had=new Set(failed().map(q=>q.id));
+  let added=0;
+  sim.qs.forEach(q=>{if(sim.ans[q.id]!==q.a){delete S.r[q.id];if(!had.has(q.id)){S.fx.push(q.id);added++}}});
+  sim.added=added;
   S.sims.push({ts:Date.now(),ok,n:25,ids:sim.qs.map(q=>q.id),wrong:sim.qs.filter(q=>sim.ans[q.id]!==q.a).map(q=>q.id)});
   save();viewSim();
 }
@@ -245,20 +273,23 @@ function viewSim(){
   const m=$('#main');
   if(!sim){
     const h=S.sims.slice(-5).reverse().map(s=>`<div class="tl"><span>${new Date(s.ts).toLocaleDateString('es-ES')}</span><span class="n">${s.ok}/25 ${s.ok>=15?'Aprobado':'No aprobado'}</span></div>`).join('');
-    m.innerHTML=`<div class="card"><p class="q">Simulacro de examen</p><p style="margin:0">25 preguntas al azar, 5 de cada tarea, 45 minutos. Se necesitan 15 aciertos para aprobar (60 %). No verás las respuestas hasta el final.</p><div class="row"><button class="btn" id="go">Empezar simulacro</button></div>${h?'<div><div class="note" style="margin-bottom:6px">Últimos intentos</div>'+h+'</div>':''}</div>`;
+    m.innerHTML=`<div class="card"><p class="q">Simulacro de examen</p><p style="margin:0">25 preguntas al azar, 5 de cada tarea, 30 minutos. Siempre te salen preguntas que aún no han aparecido en un simulacro anterior (te quedan ${300-S.seen.length} sin ver). Se necesitan 15 aciertos para aprobar (60 %). No verás las respuestas hasta el final.</p><div class="row"><button class="btn" id="go">Empezar simulacro</button></div>${h?'<div><div class="note" style="margin-bottom:6px">Últimos intentos</div>'+h+'</div>':''}</div>`;
     $('#go').onclick=startSim;return;
   }
   if(sim.done){
     const ok=sim.qs.filter(q=>sim.ans[q.id]===q.a).length;
     const wr=sim.qs.filter(q=>sim.ans[q.id]!==q.a);
     m.innerHTML=`<div class="card"><div class="meta"><span>Resultado</span></div><div class="big" style="color:var(--${ok>=15?'ok':'bad'})">${ok}/25</div><p style="margin:0"><strong>${ok>=15?'Aprobado.':'No aprobado.'}</strong> Necesitas 15. ${wr.length?'Estas son las '+wr.length+' que fallaste:':''}</p>
+      ${wr.length?'<p class="note" style="margin:0">'+(sim.added?sim.added+' se añadieron a Falladas para que las repases. ':'')+(wr.length-sim.added>0?(wr.length-sim.added)+' ya estaban en Falladas y no se duplican.':'')+'</p>':''}
       ${wr.map(q=>`<div class="card" style="background:var(--bg)">${qCard(q,{chosen:sim.ans[q.id],reveal:true})}</div>`).join('')}
-      <div class="row"><button class="btn" id="again">Otro simulacro</button></div></div>`;
-    $('#again').onclick=()=>{sim=null;viewSim()};return;
+      <div class="row"><button class="btn" id="again">Otro simulacro</button>${wr.length?'<button class="btn ghost" id="gofail">Repasar falladas</button>':''}</div></div>`;
+    $('#again').onclick=()=>{sim=null;viewSim()};
+    const gf=$('#gofail');if(gf)gf.onclick=()=>{tab='falladas';cur=null;shown=false;sim=null;render()};
+    renderStats();renderTabs();return;
   }
   const q=sim.qs[sim.i];
   const answered=Object.keys(sim.ans).length;
-  m.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><span class="note">Pregunta ${sim.i+1} de 25 · ${answered} contestadas</span><span class="timer" id="tm">45:00</span></div>
+  m.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><span class="note">Pregunta ${sim.i+1} de 25 · ${answered} contestadas</span><span class="timer" id="tm">30:00</span></div>
     ${qCard(q,{chosen:sim.ans[q.id],reveal:false})}
     <div class="row"><button class="btn ghost" id="sp" ${sim.i?'':'disabled'}>Anterior</button>${sim.i<24?'<button class="btn" id="sn">Siguiente</button>':'<button class="btn" id="fin">Terminar</button>'}</div></div>`;
   m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{sim.ans[q.id]=+b.dataset.i;viewSim()});
