@@ -62,6 +62,10 @@ body{background:var(--bg);color:var(--fg);font:16px/1.5 Inter,system-ui,sans-ser
 .timer.low{color:var(--bad)}
 .empty{color:var(--mut);text-align:center;padding:24px 8px}
 @media(max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}}
+.dots{display:flex;flex-wrap:wrap;gap:6px}
+.dot{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:600 12px Inter,system-ui,sans-serif;cursor:pointer;padding:0}
+.dot.d{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.dot.c{outline:2px solid var(--red);outline-offset:2px}
 </style>
 <div class="wrap">
   <header class="hero">
@@ -394,7 +398,13 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 // ---------- persistence ----------
 function lsGet(){try{return JSON.parse(localStorage.getItem('ccse300')||'null')}catch(e){return null}}
 function lsSet(){try{localStorage.setItem('ccse300',JSON.stringify(S))}catch(e){}}
-function norm(d){return {a:d&&d.a||{},r:d&&d.r||{},sims:d&&d.sims||[],seen:d&&d.seen||[],fx:d&&d.fx||[]}}
+function norm(d){
+  const o={a:d&&d.a||{},r:d&&d.r||{},sims:d&&d.sims||[],seen:d&&d.seen||[],fx:d&&d.fx||[]};
+  // recupera de simulacros anteriores las preguntas que ya salieron
+  const set=new Set(o.seen);o.sims.forEach(s=>(s.ids||[]).forEach(id=>{if(!set.has(id)){set.add(id);o.seen.push(id)}}));
+  return o}
+function simSave(){try{if(sim&&!sim.done)localStorage.setItem('ccse300sim',JSON.stringify({ids:sim.qs.map(q=>q.id),ans:sim.ans,i:sim.i,end:sim.end,repeated:sim.repeated}));else localStorage.removeItem('ccse300sim')}catch(e){}}
+function simLoad(){try{const d=JSON.parse(localStorage.getItem('ccse300sim')||'null');if(d&&d.end>Date.now()&&d.ids.length===25&&d.ids.every(id=>byId[id])){sim={qs:d.ids.map(id=>byId[id]),ans:d.ans||{},i:d.i||0,end:d.end,done:false,repeated:d.repeated||0};clearInterval(timerH);timerH=setInterval(tick,1000)}else localStorage.removeItem('ccse300sim')}catch(e){}}
 function save(){
   lsSet();
   if(!ref)return;
@@ -403,7 +413,7 @@ function save(){
 }
 function setSync(t){$('#sync').textContent=t}
 async function init(){
-  S=norm(lsGet());
+  S=norm(lsGet());simLoad();
   const goTo=t=>{tab=t;cur=null;shown=false;render();$('#tabs').scrollIntoView({behavior:'smooth',block:'start'})};
   $('#heroGo').onclick=()=>goTo('practicar');
   $('#heroSim').onclick=()=>{if(sim&&sim.done)sim=null;goTo('simulacro')};
@@ -465,7 +475,7 @@ function qCard(q,opt){
   let exp='';
   if(reveal){
     const good=chosen===q.a;
-    exp=`<div class="exp ${good?'ok':'bad'}"><strong>${good?'Correcto.':'Incorrecto. La respuesta es la '+L[q.a]+'.'}</strong>${esc(q.e)}</div>`;
+    exp=`<div class="exp ${good?'ok':'bad'}"><strong>${good?'Correcto.':(chosen===undefined?'Sin contestar. La respuesta es la ':'Incorrecto. La respuesta es la ')+L[q.a]+'.'}</strong>${esc(q.e)}</div>`;
   }
   return `<div class="meta"><span>Pregunta ${q.id}</span><span>${TS[q.t]}</span></div><p class="q">${esc(q.q)}</p><div class="opts">${opts}</div>${exp}`;
 }
@@ -550,14 +560,14 @@ function startSim(){
     const all=Q.filter(q=>q.t===t);
     const fresh=all.filter(q=>!S.seen.includes(q.id));
     let ch=pick(fresh,5);
-    if(ch.length<5){repeated+=5-ch.length;ch=ch.concat(pick(all.filter(q=>S.seen.includes(q.id)),5-ch.length))}
+    if(ch.length<5){repeated+=5-ch.length;const old=all.filter(q=>S.seen.includes(q.id)).sort((x,y)=>S.seen.indexOf(x.id)-S.seen.indexOf(y.id));ch=ch.concat(old.slice(0,5-ch.length))}
     qs=qs.concat(ch);
   }
-  qs.forEach(q=>{if(!S.seen.includes(q.id))S.seen.push(q.id)});
+  qs.forEach(q=>{S.seen=S.seen.filter(x=>x!==q.id);S.seen.push(q.id)});
   save();
   sim={qs,ans:{},i:0,end:Date.now()+30*60*1000,done:false,repeated};
   clearInterval(timerH);timerH=setInterval(tick,1000);
-  viewSim();
+  simSave();viewSim();
 }
 function tick(){
   if(!sim||sim.done){clearInterval(timerH);return}
@@ -567,7 +577,7 @@ function tick(){
 }
 function finishSim(){
   if(!sim||sim.done)return;
-  sim.done=true;clearInterval(timerH);
+  sim.done=true;clearInterval(timerH);simSave();
   const ok=sim.qs.filter(q=>sim.ans[q.id]===q.a).length;
   const had=new Set(failed().map(q=>q.id));
   let added=0;
@@ -595,14 +605,17 @@ function viewSim(){
     renderStats();renderTabs();return;
   }
   const q=sim.qs[sim.i];
-  const answered=Object.keys(sim.ans).length;
+  const answered=Object.keys(sim.ans).length;const fin=sim.warn&&answered<25;
   m.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><span class="note">Pregunta ${sim.i+1} de 25 · ${answered} contestadas</span><span class="timer" id="tm">30:00</span></div>
     ${qCard(q,{chosen:sim.ans[q.id],reveal:false})}
+    <div class="dots">${sim.qs.map((x,k)=>`<button class="dot${sim.ans[x.id]!==undefined?' d':''}${k===sim.i?' c':''}" data-k="${k}">${k+1}</button>`).join('')}</div>
+    ${fin?`<p class="note" style="margin:0;color:var(--bad)">Te faltan ${25-answered} por contestar. Toca "Terminar" otra vez para entregar así.</p>`:''}
     <div class="row"><button class="btn ghost" id="sp" ${sim.i?'':'disabled'}>Anterior</button>${sim.i<24?'<button class="btn" id="sn">Siguiente</button>':'<button class="btn" id="fin">Terminar</button>'}</div></div>`;
-  m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{sim.ans[q.id]=+b.dataset.i;viewSim()});
-  $('#sp').onclick=()=>{sim.i--;viewSim()};
-  const sn=$('#sn');if(sn)sn.onclick=()=>{sim.i++;viewSim()};
-  const fn=$('#fin');if(fn)fn.onclick=finishSim;
+  m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{sim.ans[q.id]=+b.dataset.i;sim.warn=false;simSave();viewSim()});
+  m.querySelectorAll('.dot').forEach(b=>b.onclick=()=>{sim.i=+b.dataset.k;simSave();viewSim()});
+  $('#sp').onclick=()=>{sim.i--;simSave();viewSim()};
+  const sn=$('#sn');if(sn)sn.onclick=()=>{sim.i++;simSave();viewSim()};
+  const fn=$('#fin');if(fn)fn.onclick=()=>{if(Object.keys(sim.ans).length<25&&!sim.warn){sim.warn=true;viewSim();return}finishSim()};
   tick();
 }
 
@@ -628,7 +641,7 @@ function viewProgreso(){
   let armed=false;
   $('#rst').onclick=()=>{
     if(!armed){armed=true;$('#rst').textContent='Toca otra vez para confirmar';return}
-    S={a:{},r:{},sims:[]};save();render();
+    S=norm(null);sim=null;simSave();save();render();
   };
 }
 
